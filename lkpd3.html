@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD JavaScript - Aira (X PPLG 2)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-code: #0b1120;
+            --accent-yellow: #facc15;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-purple: #c084fc;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(250, 204, 21, 0.08) 0%, transparent 40%);
+        }
+
+        /* Header / Hero Section */
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 3rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge-school {
+            display: inline-block;
+            background: rgba(250, 204, 21, 0.15);
+            color: var(--accent-yellow);
+            border: 1px solid rgba(250, 204, 21, 0.4);
+            padding: 0.35rem 1rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.75rem);
+            font-weight: 800;
+            background: linear-gradient(to right, #facc15, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem auto;
+        }
+
+        /* Student & Course Info Card */
+        .info-grid {
+            max-width: 960px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            text-align: left;
+        }
+
+        .info-box {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+        }
+
+        .info-box.highlight {
+            border-color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .info-box.highlight .info-value {
+            color: var(--accent-blue);
+            font-size: 1.15rem;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 960px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Card Section */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: #475569;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--accent-yellow);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-badge {
+            background: var(--accent-yellow);
+            color: #0f172a;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-text {
+            color: #e2e8f0;
+            margin-bottom: 1rem;
+        }
+
+        .file-pill {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            background: rgba(192, 132, 252, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid rgba(192, 132, 252, 0.3);
+            padding: 0.2rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+        }
+
+        /* Code Block Styling */
+        .code-wrapper {
+            background: var(--bg-code);
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: #162032;
+            padding: 0.5rem 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .dots {
+            display: flex;
+            gap: 6px;
+        }
+        .dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dots span:nth-child(1) { background: #ef4444; }
+        .dots span:nth-child(2) { background: #eab308; }
+        .dots span:nth-child(3) { background: #22c55e; }
+
+        pre {
+            padding: 1.15rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.92rem;
+            color: #e2e8f0;
+        }
+
+        .kw { color: #c084fc; } /* keyword */
+        .str { color: #4ade80; } /* string */
+        .num { color: #fb923c; } /* number */
+        .fn { color: #38bdf8; } /* function */
+        .cm { color: #64748b; font-style: italic; } /* comment */
+
+        /* Answer Box */
+        .answer-box {
+            background: rgba(74, 222, 128, 0.08);
+            border-left: 4px solid var(--accent-green);
+            padding: 1rem 1.25rem;
+            border-radius: 0 10px 10px 0;
+            margin-top: 1rem;
+        }
+
+        .answer-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent-green);
+            letter-spacing: 0.5px;
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: #0f172a;
+            color: var(--accent-blue);
+            font-weight: 700;
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(15, 23, 42, 0.35);
+        }
+
+        .ans-cell {
+            color: var(--accent-green);
+            font-weight: 500;
+        }
+
+        /* Lists */
+        ul.custom-list, ol.custom-list {
+            padding-left: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        /* Blank / Editable Boxes for Reflection & Self Assessment */
+        .blank-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px dashed #475569;
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .blank-line {
+            border-bottom: 1px dashed #475569;
+            height: 2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-end;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .checkbox-square {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #64748b;
+            border-radius: 4px;
+            background: #0f172a;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER & IDENTITAS -->
+    <header>
+        <div class="badge-school">SMKN 1 GARUT • KURIKULUM MERDEKA</div>
+        <h1>LEMBAR KERJA PESERTA DIDIK (LKPD)</h1>
+        <p class="subtitle">JavaScript — String, Number, dan Konversi Data</p>
+
+        <div class="info-grid">
+            <div class="info-box highlight">
+                <span class="info-label">Nama Peserta Didik</span>
+                <span class="info-value">Aira</span>
+            </div>
+            <div class="info-box highlight">
+                <span class="info-label">Kelas</span>
+                <span class="info-value">X PPLG 2</span>
+            </div>
+            <div class="info-box">
+                <span class="info-label">Mata Pelajaran</span>
+                <span class="info-value">Dasar-Dasar PPLG</span>
+            </div>
+            <div class="info-box">
+                <span class="info-label">Kelas / Fase & Alokasi</span>
+                <span class="info-value">X / Fase E (2 × 45 Menit)</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- BAGIAN A: TUJUAN PEMBELAJARAN -->
+        <section class="card">
+            <h2 class="section-title"><span class="section-badge">A</span> TUJUAN PEMBELAJARAN</h2>
+            <p class="instruction-text">
+                Setelah menyelesaikan LKPD ini, peserta didik mampu:
+            </p>
+            <ol class="custom-list">
+                <li>Membedakan tipe data <strong>String</strong> dan <strong>Number</strong>;</li>
+                <li>Menjelaskan bahwa fungsi <code>prompt()</code> menghasilkan <strong>String</strong>;</li>
+                <li>Menggunakan fungsi konversi <code>Number()</code> dan <code>String()</code>;</li>
+                <li>Menganalisis kesalahan akibat perbedaan tipe data; dan</li>
+                <li>Membuat program input dan perhitungan sederhana.</li>
+            </ol>
+        </section>
+
+        <!-- BAGIAN B: PETUNJUK KERJA -->
+        <section class="card">
+            <h2 class="section-title"><span class="section-badge">B</span> PETUNJUK KERJA</h2>
+            <ul class="custom-list">
+                <li>Kerjakan mandiri terlebih dahulu.</li>
+                <li>Diskusikan melalui <em>Think Pair Share</em>.</li>
+            </ul>
+        </section>
+
+        <!-- BAGIAN C: AKTIVITAS 1 -->
+        <section class="card">
+            <h2 class="section-title"><span class="section-badge">C</span> AKTIVITAS 1 — EKSPERIMEN 10 + 20</h2>
+            <p class="instruction-text">
+                Prediksi hasil sebelum menjalankan kode. Jalankan kode dan amati. Simpan file sebagai <span class="file-pill">lkpd_string_number_aira.js</span>.
+            </p>
+            <p class="instruction-text"><strong>Jangan jalankan terlebih dahulu. Prediksikan hasil:</strong></p>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <div class="dots"><span></span><span></span><span></span></div>
+                    <span>lkpd_string_number_aira.js</span>
+                </div>
+                <pre><span class="kw">let</span> a = <span class="str">"10"</span>;
+            <span class="kw">let</span> b = <span class="str">"20"</span>;
+            <span class="fn">console</span>.<span class="fn">log</span>(a + b);</pre>
+            </div>
+            <img src="bukti 1.png" alt="bukti 1.png">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;">Pertanyaan</th>
+                            <th>Jawaban Kamu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Apa output program?</td>
+                            <td class="ans-cell"><code>1020</code></td>
+                        </tr>
+                        <tr>
+                            <td>Mengapa hasil tersebut terjadi?</td>
+                            <td class="ans-cell">Karena variabel <code>a</code> dan <code>b</code> diapit tanda kutip (<code>"..."</code>) sehingga dibaca sebagai tipe data <strong>String</strong> (teks). Operator <code>+</code> pada String berfungsi untuk menggabungkan teks (<em>concatenation</em>), bukan menjumlahkan angka.</td>
+                        </tr>
+                        <tr>
+                            <td>Apakah <code>a</code> dan <code>b</code> bertipe Number?</td>
+                            <td class="ans-cell">Tidak, keduanya bertipe <strong>String</strong>.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="answer-box">
+                <span class="answer-label">Uji sekarang. Apakah prediksimu benar? Jelaskan.</span>
+                <p><strong>Benar.</strong> Setelah kode dijalankan di console/terminal, output yang muncul adalah <code>1020</code>. Hal ini membuktikan bahwa JavaScript menggabungkan teks <code>"10"</code> dan <code>"20"</code> secara berdampingan karena keduanya bertipe String, bukan melakukan operasi aritmatika penjumlahan.</p>
+            </div>
+        </section>
+
+        <!-- BAGIAN D: AKTIVITAS 2 -->
+        <section class="card">
+            <h2 class="section-title"><span class="section-badge">D</span> AKTIVITAS 2 — MENEMUKAN TIPE DATA</h2>
+            <p class="instruction-text">Jalankan kode berikut untuk memeriksa tipe datanya:</p>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <div class="dots"><span></span><span></span><span></span></div>
+                    <span>cek_tipe_data.js</span>
+                </div>
+                <pre><span class="kw">let</span> nama = <span class="str">"aira"</span>;
+<span class="kw">let</span> umur = <span class="num">16</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">typeof</span> nama);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">typeof</span> umur);</pre>
+            </div>
+            <img src="bukti 2.png" alt="bukti 2.png">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variabel</th>
+                            <th>Prediksi</th>
+                            <th>Hasil <code>typeof</code></th>
+                            <th>Kesimpulan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>nama</code></td>
+                            <td class="ans-cell">string</td>
+                            <td class="ans-cell"><code>string</code></td>
+                            <td class="ans-cell">Nilai yang diapit tanda kutip (<code>"Asep"</code>) otomatis dikenali JavaScript sebagai tipe data String.</td>
+                        </tr>
+                        <tr>
+                            <td><code>umur</code></td>
+                            <td class="ans-cell">number</td>
+                            <td class="ans-cell"><code>number</code></td>
+                            <td class="ans-cell">Nilai angka murni tanpa tanda kutip (<code>16</code>) dikenali sebagai tipe data Number.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="answer-box">
+                <span class="answer-label">Temuan: Apa perbedaan String dan Number berdasarkan eksperimenmu?</span>
+                <p><strong>String</strong> adalah tipe data untuk teks/karakter yang penulisannya wajib diapit tanda kutip (<code>"..."</code> atau <code>'...'</code>) dan tidak bisa dihitung secara matematis dengan benar. Sedangkan <strong>Number</strong> adalah tipe data khusus angka yang ditulis tanpa tanda kutip dan dapat digunakan dalam operasi matematika (tambah, kurang, kali, bagi).</p>
+            </div>
+        </section>
+
+        <!-- BAGIAN E: AKTIVITAS 3 -->
+        <section class="card">
+            <h2 class="section-title"><span class="section-badge">E</span> AKTIVITAS 3 — KONVERSI STRING MENJADI NUMBER</h2>
+            <p class="instruction-text">Perbaiki program agar menghasilkan <code>30</code>. Gunakan <code>Number()</code>:</p>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <div class="dots"><span></span><span></span><span></span></div>
+                    <span>konversi_number.js (Jawaban)</span>
+                </div>
+                <pre><span class="kw">let</span> a = <span class="str">"10"</span>;
+<span class="kw">let</span> b = <span class="str">"20"</span>;
+<span class="kw">let</span> hasil = <span class="fn">Number</span>(a) + <span class="fn">Number</span>(b);
+<span class="fn">console</span>.<span class="fn">log</span>(hasil);</pre>
+            </div>
+            <img src="bukti 3.png" alt="bukti 3.png">
+            <div class="answer-box">
+                <span class="answer-label">Catat hasil program:</span>
+                <p>Output program menghasilkan angka <strong><code>30</code></strong> (bertipe Number).</p>
+            </div>
+        </section>
+
+        <!-- BAGIAN F: AKTIVITAS 4 -->
+        <section class="card">
+            <h2 class="section-title"><span class="section-badge">F</span> AKTIVITAS 4 — PROGRAM KASIR SEDERHANA</h2>
+            <p class="instruction-text">
+                Buat program yang meminta harga barang dan jumlah barang melalui <code>prompt()</code>, mengubah keduanya menjadi Number, lalu menghitung total harga.
+            </p>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <div class="dots"><span></span><span></span><span></span></div>
+                    <span>kasir_sederhana.js (Jawaban)</span>
+                </div>
+                <pre><span class="kw">let</span> harga = <span class="fn">Number</span>(<span class="fn">prompt</span>(<span class="str">"Masukkan harga: "</span>));
+<span class="kw">let</span> jumlah = <span class="fn">Number</span>(<span class="fn">prompt</span>(<span class="str">"Masukkan jumlah: "</span>));
+<span class="kw">let</span> total = harga * jumlah;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Total belanja = "</span> + total);</pre>
+            </div>
+            <img src="bukti 4.png" alt="bukti 4.png">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;">Input Uji</th>
+                            <th>Nilai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Harga</td>
+                            <td class="ans-cell">Rp 15.000</td>
+                        </tr>
+                        <tr>
+                            <td>Jumlah</td>
+                            <td class="ans-cell">3</td>
+                        </tr>
+                        <tr>
+                            <td>Total seharusnya</td>
+                            <td class="ans-cell">Rp 45.000</td>
+                        </tr>
+                        <tr>
+                            <td>Total program</td>
+                            <td class="ans-cell">Rp 45000 (<code>Total belanja = 45000</code>)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- BAGIAN G: TANTANGAN -->
+        <section class="card">
+            <h2 class="section-title"><span class="section-badge">G</span> TANTANGAN — PROGRAM HITUNG NILAI</h2>
+            <p class="instruction-text">
+                Buat program dengan input nilai tugas, UTS, dan UAS. Konversikan semua input menggunakan <code>Number()</code>, lalu hitung rata-rata dengan rumus <code>(tugas + UTS + UAS) / 3</code>.
+            </p>
+
+            <div class="answer-box" style="margin-bottom: 1rem;">
+                <span class="answer-label">Algoritma saya:</span>
+                <ol class="custom-list" style="margin-top: 0.5rem;">
+                    <li>Meminta pengguna memasukkan nilai <strong>Tugas</strong> melalui <code>prompt()</code> dan langsung mengonversinya menjadi tipe data angka menggunakan <code>Number()</code>.</li>
+                    <li>Meminta pengguna memasukkan nilai <strong>UTS</strong> dan <strong>UAS</strong> melalui <code>prompt()</code>, serta mengonversi masing-masing menjadi Number.</li>
+                    <li>Menghitung nilai rata-rata dengan rumus <code>(tugas + uts + uas) / 3</code> dan menyimpannya ke dalam variabel <code>rataRata</code>.</li>
+                    <li>Menampilkan hasil akhir nilai rata-rata ke layar menggunakan <code>console.log()</code>.</li>
+                </ol>
+            </div>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <div class="dots"><span></span><span></span><span></span></div>
+                    <span>hitung_nilai.js (Kode Program)</span>
+                </div>
+                <pre><span class="kw">let</span> tugas = <span class="fn">Number</span>(<span class="fn">prompt</span>(<span class="str">"Masukkan nilai Tugas:"</span>));
+<span class="kw">let</span> uts = <span class="fn">Number</span>(<span class="fn">prompt</span>(<span class="str">"Masukkan nilai UTS:"</span>));
+<span class="kw">let</span> uas = <span class="fn">Number</span>(<span class="fn">prompt</span>(<span class="str">"Masukkan nilai UAS:"</span>));
+
+<span class="kw">let</span> rataRata = (tugas + uts + uas) / <span class="num">3</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Nilai Rata-rata Anda adalah: "</span> + rataRata);</pre>
+            </div>
+            <img src="bukti tantangan.png" alt="bukti tantangan.png">
+        </section>
+
+        <!-- BAGIAN H: THINK PAIR SHARE -->
+        <section class="card">
+            <h2 class="section-title"><span class="section-badge">H</span> THINK PAIR SHARE</h2>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Pertanyaan</th>
+                            <th>Jawaban</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mengapa <code>prompt()</code> perlu dikonversi jika hasilnya ingin dihitung?</td>
+                            <td class="ans-cell">Karena fungsi <code>prompt()</code> selalu mengembalikan data bertipe <strong>String</strong> meskipun pengguna mengetikkan angka. Agar bisa dihitung secara matematis, data tersebut harus diubah dulu ke tipe Number.</td>
+                        </tr>
+                        <tr>
+                            <td>Apa perbedaan <code>"10"</code> dengan <code>10</code>?</td>
+                            <td class="ans-cell"><code>"10"</code> (pakai kutip) bertipe <strong>String</strong> (dianggap karakter teks), sedangkan <code>10</code> (tanpa kutip) bertipe <strong>Number</strong> (dianggap nilai bilangan/angka).</td>
+                        </tr>
+                        <tr>
+                            <td>Apa yang terjadi jika lupa <code>Number()</code>?</td>
+                            <td class="ans-cell">Pada operasi penjumlahan (<code>+</code>), angka-angka tidak akan dijumlahkan melainkan digabung menjadi teks panjang (contoh: <code>"80" + "90"</code> menjadi <code>"8090"</code>), sehingga hasil perhitungan menjadi salah/bug.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="answer-box">
+                <span class="answer-label">Pair & Share:</span>
+                <p><strong>Pair (Bandingkan jawaban dengan teman. Apakah sama? Mengapa bisa berbeda?):</strong><br>
+                Secara garis besar jawabannya sama, yaitu tentang pentingnya konversi tipe data sebelum berhitung. Perbedaannya hanya pada cara penyampaian kalimat dan contoh angka yang digunakan saat menjelaskan.</p>
+                <br>
+                <p><strong>Share (Sampaikan satu temuan penting kepada kelas):</strong><br>
+                Semua input dari pengguna melalui <code>prompt()</code> otomatis terbaca sebagai teks (String), sehingga kita wajib membungkusnya dengan <code>Number()</code> sebelum melakukan operasi matematika agar tidak terjadi kesalahan penggabungan teks.</p>
+            </div>
+        </section>
+
+
+        <!-- ===================================================================== -->
+        <!-- BAGIAN REFLEKSI (DIBIARKAN KOSONG SESUAI PERMINTAAN UNTUK DIISI MANUAL) -->
+        <!-- ===================================================================== -->
+        <section class="card" id="bagian-refleksi">
+            <h2 class="section-title"><span class="section-badge">I</span> REFLEKSI 3-2-1</h2>
+            
+            <div class="blank-box">
+                <p style="font-weight: 700; color: var(--accent-blue); margin-bottom: 0.5rem;">3 hal yang saya pahami:</p>
+                <div class="blank-line">1.</div>
+                <div class="blank-line">2.</div>
+                <div class="blank-line">3.</div>
+            </div>
+
+            <div class="blank-box">
+                <p style="font-weight: 700; color: var(--accent-yellow); margin-bottom: 0.5rem;">2 hal yang masih membingungkan:</p>
+                <div class="blank-line">1.</div>
+                <div class="blank-line">2.</div>
+            </div>
+
+            <div class="blank-box" style="margin-bottom: 0;">
+                <p style="font-weight: 700; color: var(--accent-green); margin-bottom: 0.5rem;">1 hal yang ingin saya coba pada program berikutnya:</p>
+                <div class="blank-line">1.</div>
+            </div>
+        </section>
+        <!-- AKHIR BAGIAN REFLEKSI -->
+
+
+        <!-- ===================================================================== -->
+        <!-- BAGIAN PENILAIAN DIRI / SIKAP (DIKOSONGKAN SESUAI PERMINTAAN)         -->
+        <!-- ===================================================================== -->
+        <section class="card" id="bagian-penilaian-diri">
+            <h2 class="section-title"><span class="section-badge">J</span> PENILAIAN DIRI</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pernyataan</th>
+                            <th class="center" style="width: 100px;">Ya</th>
+                            <th class="center" style="width: 100px;">Belum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Saya dapat membedakan String dan Number.</td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Saya memahami <code>prompt()</code> menghasilkan String.</td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Saya dapat menggunakan <code>Number()</code>.</td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Saya dapat menggunakan <code>String()</code>.</td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Saya dapat menemukan kesalahan tipe data.</td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Saya dapat membuat program input dan hitung sederhana.</td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                            <td class="center"><span class="checkbox-square"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <!-- AKHIR BAGIAN PENILAIAN DIRI / SIKAP -->
+
+
+        <!-- BAGIAN K: RUBRIK PENILAIAN PRAKTIK -->
+        <section class="card">
+            <h2 class="section-title"><span class="section-badge">K</span> RUBRIK PENILAIAN PRAKTIK</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspek</th>
+                            <th>4 - Sangat Baik</th>
+                            <th>3 - Baik</th>
+                            <th>2 - Cukup</th>
+                            <th>1 - Perlu Bimbingan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Tipe data</strong></td>
+                            <td>Menjelaskan dan membedakan String/Number dengan sangat tepat.</td>
+                            <td>Menjelaskan dan membedakan String/Number dengan baik.</td>
+                            <td>Masih ada kekeliruan.</td>
+                            <td>Belum memahami.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Konversi</strong></td>
+                            <td>Tepat dan mandiri.</td>
+                            <td>Benar dengan sedikit arahan.</td>
+                            <td>Beberapa kesalahan.</td>
+                            <td>Belum mampu.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Program</strong></td>
+                            <td>Berjalan benar dan rapi.</td>
+                            <td>Sedikit kesalahan.</td>
+                            <td>Berjalan sebagian.</td>
+                            <td>Belum berjalan.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pemecahan masalah</strong></td>
+                            <td>Menemukan dan memperbaiki error secara mandiri.</td>
+                            <td>Menemukan dan memperbaiki error dengan sedikit bantuan.</td>
+                            <td>Perlu banyak bantuan.</td>
+                            <td>Belum mampu.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="blank-box" style="margin-top: 1rem; margin-bottom: 0;">
+                <p style="font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">Catatan Guru:</p>
+                <div class="blank-line"></div>
+                <div class="blank-line"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        LKPD JavaScript String, Number & Konversi Data • Dikerjakan oleh <strong>Aira (X PPLG 2)</strong> — SMKN 1 Garut
+    </footer>
+
+</body>
+</html>
